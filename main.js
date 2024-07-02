@@ -57,10 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     messageDiv.style.color = 'green';
                     messageDiv.textContent = `恭喜成功！一共用了${moveCount}步。`;
                     isGameActive = false;
-                } else if (!hasValidMoves()) {
-                    messageDiv.style.color = 'red';
-                    messageDiv.textContent = `失败了，再来一次，加油！`;
-                    isGameActive = false;
+                } else {
+                    checkNoValidMoves();
                 }
             } else {
                 selectedPeg = null;
@@ -71,10 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 selectedPeg = { row, col };
                 drawBoard();
             }
-        }
-
-        if (!isGameActive) {
-            checkNoValidMoves();
         }
     });
 
@@ -113,10 +107,10 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let row = 0; row < boardSize; row++) {
             for (let col = 0; col < boardSize; col++) {
                 if (board[row][col] === 1) {
-                    if (isValidMove(row, col, row - 2, col) ||
-                        isValidMove(row, col, row + 2, col) ||
-                        isValidMove(row, col, row, col - 2) ||
-                        isValidMove(row, col, row, col + 2)) {
+                    if ((row - 2 >= 0 && board[row - 2][col] === 0 && board[row - 1][col] === 1) ||
+                        (row + 2 < boardSize && board[row + 2][col] === 0 && board[row + 1][col] === 1) ||
+                        (col - 2 >= 0 && board[row][col - 2] === 0 && board[row][col - 1] === 1) ||
+                        (col + 2 < boardSize && board[row][col + 2] === 0 && board[row][col + 1] === 1)) {
                         return true;
                     }
                 }
